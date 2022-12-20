@@ -30,10 +30,7 @@ request = requests.get(
     "https://raw.githubusercontent.com/home-assistant/core/dev/requirements.txt"
 )
 request = request.text.split("\n")
-for req in request:
-    if "=" in req:
-        harequire.append(get_package(req))
-
+harequire.extend(get_package(req) for req in request if "=" in req)
 with open(f"{PKG_PATH}/manifest.json", encoding="utf8") as manifest:
     manifest = json.load(manifest)
 

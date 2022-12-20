@@ -61,9 +61,7 @@ def get_commits(repo: Repository, since: datetime, until: datetime):
             commits = dev_commits
     except GithubException:
         pass
-    if len(list(commits)) == 1:
-        return []
-    return reversed(list(commits)[:-1])
+    return [] if len(list(commits)) == 1 else reversed(list(commits)[:-1])
 
 
 def get_release_tags(repo: Repository) -> List[Tag.Tag]:
@@ -154,13 +152,7 @@ def _bump_release(release, bump_type):
 
 def bump_version(version: Version) -> Version:
     """Return a new version given a current version."""
-    to_change = {}
-
-    # Convert 0.67.3 to 0.67.4
-    # Convert 0.67.3.b5 to 0.67.3
-    # Convert 0.67.3.dev0 to 0.67.3
-    to_change["dev"] = None
-    to_change["pre"] = None
+    to_change = {"dev": None, "pre": None}
 
     if not version.is_prerelease:
         to_change["release"] = _bump_release(version.release, "patch")
