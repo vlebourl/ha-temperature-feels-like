@@ -269,10 +269,7 @@ class TemperatureFeelingSensor(Entity):
         else:
             humidity = state.state
 
-        if not self._has_state(humidity):
-            return None
-
-        return float(humidity)
+        return float(humidity) if self._has_state(humidity) else None
 
     def _get_wind_speed(self, entity_id: Optional[str]) -> Optional[float]:
         """Get wind speed value from entity."""
